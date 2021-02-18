@@ -48,6 +48,9 @@ pipeline {
             }
         }
         stage ('Wait') {
+            when {
+                branch 'master'
+            }
             steps {
                 echo 'Waiting for container A to start up'
                 sleep 30 // seconds
@@ -67,7 +70,7 @@ pipeline {
     }
     post {
         always {
-            sh 'docker image prune'
+            sh 'docker image prune -f'
             sh 'docker container stop rest-test-container'
         }
     }
