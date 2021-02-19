@@ -44,7 +44,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 
 @RestController
-@CrossOrigin(exposedHeaders = "errors, content-type")
+@CrossOrigin(exposedHeaders = "errors, content-type", origins = {"*"})
 @RequestMapping("/api/owners")
 public class OwnerRestController {
 
@@ -58,6 +58,19 @@ public class OwnerRestController {
 			ownerLastName = "";
 		}
 		Collection<Owner> owners = this.clinicService.findOwnerByLastName(ownerLastName);
+		if (owners.isEmpty()) {
+			return new ResponseEntity<Collection<Owner>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Collection<Owner>>(owners, HttpStatus.OK);
+	}
+
+	@PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
+	@RequestMapping(value = "/search/{key}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Collection<Owner>> getOwnersKey(@PathVariable("key") String key) {
+		if (key == null) {
+			key = "";
+		}
+		Collection<Owner> owners = this.clinicService.findOwnerByKey(key);
 		if (owners.isEmpty()) {
 			return new ResponseEntity<Collection<Owner>>(HttpStatus.NOT_FOUND);
 		}
