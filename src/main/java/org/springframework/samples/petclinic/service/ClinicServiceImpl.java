@@ -287,6 +287,12 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
 	@Transactional(readOnly = true)
+	public Collection<Pet> findPetByKey(String key) throws DataAccessException {
+		return petRepository.findByKey(key);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public Collection<Visit> findVisitsByPetId(int petId) {
 		return visitRepository.findByPetId(petId);
 	}
