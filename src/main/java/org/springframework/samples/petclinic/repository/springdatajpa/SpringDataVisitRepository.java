@@ -36,6 +36,6 @@ import org.springframework.data.repository.query.Param;
 public interface SpringDataVisitRepository extends VisitRepository, Repository<Visit, Integer>, VisitRepositoryOverride {
 
     @Override
-    @Query("SELECT v FROM Visit v WHERE v.description LIKE %:key% OR v.date LIKE %:key% OR v.pet.id LIKE %:key% OR v.vet.id LIKE %:key%")
+    @Query("SELECT v FROM Visit v WHERE v.description LIKE %:key% OR v.date LIKE %:key% OR v.pet.id LIKE %:key% OR v.pet.name LIKE %:key% OR v.pet.owner.firstName LIKE %:key% OR v.pet.owner.lastName LIKE %:key%  OR v.vet.id LIKE %:key%")
     Collection<Visit> findByKey(@Param("key") String key);
 }
