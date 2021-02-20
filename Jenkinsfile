@@ -49,26 +49,6 @@ pipeline {
                 }
             }
         }
-        stage ('Wait') {
-            when {
-                branch 'master'
-            }
-            steps {
-                echo 'Waiting for container A to start up'
-                sleep 30 // seconds
-            }
-        }
-        stage('Run docker image on remote server B') {
-            when {
-                branch 'master'
-            }
-            steps {
-                script {
-                    def prod = load "jobs/production.groovy"
-                    prod.run('spring-petclinic-rest-B', 9977)
-                }
-            }
-        }
     }
     post {
         always {
