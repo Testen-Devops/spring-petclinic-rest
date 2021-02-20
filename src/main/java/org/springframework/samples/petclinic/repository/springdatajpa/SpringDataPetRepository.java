@@ -42,6 +42,6 @@ public interface SpringDataPetRepository extends PetRepository, Repository<Pet, 
     List<PetType> findPetTypes() throws DataAccessException;
 
     @Override
-    @Query("SELECT pet FROM Pet pet WHERE pet.name LIKE :key  OR pet.owner.lastName LIKE :key OR pet.id LIKE :key OR pet.birthDate LIKE :key OR pet.owner.firstName LIKE :key")
+    @Query("SELECT pet FROM Pet pet WHERE pet.name LIKE :key OR pet.owner.lastName LIKE :key OR pet.id LIKE :key OR pet.birthDate LIKE :key OR pet.owner.firstName LIKE :key")
     Collection<Pet> findByKey(@Param("key") String key);
 }
