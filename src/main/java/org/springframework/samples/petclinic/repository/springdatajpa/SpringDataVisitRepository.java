@@ -15,11 +15,16 @@
  */
 package org.springframework.samples.petclinic.repository.springdatajpa;
 
+import java.util.Collection;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepository;
-
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 /**
  * Spring Data JPA specialization of the {@link VisitRepository} interface
  *
@@ -29,4 +34,8 @@ import org.springframework.samples.petclinic.repository.VisitRepository;
 
 @Profile("spring-data-jpa")
 public interface SpringDataVisitRepository extends VisitRepository, Repository<Visit, Integer>, VisitRepositoryOverride {
+
+    @Override
+    @Query("SELECT v FROM Visit v WHERE v.description LIKE %:key% OR v.date LIKE %:key% OR v.pet.id LIKE %:key% OR v.vet.id LIKE %:key%")
+    Collection<Visit> findByKey(@Param("key") String key);
 }

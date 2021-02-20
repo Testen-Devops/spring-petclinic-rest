@@ -73,6 +73,17 @@ public class VisitRestController {
 		return new ResponseEntity<Visit>(visit, HttpStatus.OK);
 	}
 
+	@PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
+	@RequestMapping(value = "/search/{key}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Collection<Visit>> getVisitsByKey(@PathVariable("key") String key){
+		Collection<Visit> visits = new ArrayList<Visit>();
+		visits.addAll(this.clinicService.findVisitsByKey(key));
+		if(visits == null){
+			return new ResponseEntity<Collection<Visit>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Collection<Visit>>(visits, HttpStatus.OK);
+	}
+
     @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Visit> addVisit(@RequestBody @Valid Visit visit, BindingResult bindingResult, UriComponentsBuilder ucBuilder){

@@ -103,6 +103,18 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
         return visits;
     }
 
+	@Override
+    public Collection<Visit> findByKey(String key) throws DataAccessException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("key", "%" + key + "%");
+        List<Visit> visits = this.namedParameterJdbcTemplate.query(
+            "SELECT * FROM Visit visit WHERE description LIKE :key OR vet.id LIKE :key OR pet.id LIKE :key OR date LIKE :key",
+            params,
+            BeanPropertyRowMapper.newInstance(Visit.class)
+        );
+        return visits;
+    }
+
     @Override
     public List<Visit> findByVetId(Integer vetId) {
         Map<String, Object> params = new HashMap<>();
