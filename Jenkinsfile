@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Build') {
             when {
-                anyOf { branch 'develop'; branch 'master'; branch 'feature/search' }
+                anyOf { branch 'develop'; branch 'master'; }
             }
             steps {
                 script {
