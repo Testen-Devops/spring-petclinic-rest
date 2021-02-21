@@ -102,6 +102,18 @@ public class JdbcPetRepositoryImpl implements PetRepository {
     }
 
     @Override
+    public Collection<Pet> findByKey(String key) throws DataAccessException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("key", key);
+        List<Pet> pets = this.namedParameterJdbcTemplate.query(
+            "SELECT * FROM Pet pet WHERE name LIKE :key OR owner LIKE :key OR id LIKE :key OR birth_date LIKE :key",
+            params,
+            BeanPropertyRowMapper.newInstance(Pet.class)
+        );
+        return pets;
+    }
+
+    @Override
     public void save(Pet pet) throws DataAccessException {
         if (pet.isNew()) {
             Number newKey = this.insertPet.executeAndReturnKey(

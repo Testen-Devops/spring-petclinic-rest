@@ -90,6 +90,19 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         return owners;
     }
 
+    @Override
+    public Collection<Owner> findByKey(String key) throws DataAccessException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("key", key);
+        List<Owner> owners = this.namedParameterJdbcTemplate.query(
+            "SELECT * FROM Owner owner WHERE last_name LIKE :key OR first_name LIKE :key OR city LIKE :key OR address LIKE :key OR telephone LIKE :key",
+            params,
+            BeanPropertyRowMapper.newInstance(Owner.class)
+        );
+        loadOwnersPetsAndVisits(owners);
+        return owners;
+    }
+
     /**
      * Loads the {@link Owner} with the supplied <code>id</code>; also loads the {@link Pet Pets} and {@link Visit Visits}
      * for the corresponding owner, if not already loaded.

@@ -52,6 +52,15 @@ public interface OwnerRepository {
      */
     Owner findById(int id) throws DataAccessException;
 
+    /**
+     * Retrieve an <code>Owner</code> from the data store by a search key.
+     *
+     * @param key the seatch key to search for
+     * @return the <code>Owner</code> if found
+     * @throws org.springframework.dao.DataRetrievalFailureException if not found
+     */
+    Collection<Owner> findByKey(String key) throws DataAccessException;
+
 
     /**
      * Save an <code>Owner</code> to the data store, either inserting or updating it.

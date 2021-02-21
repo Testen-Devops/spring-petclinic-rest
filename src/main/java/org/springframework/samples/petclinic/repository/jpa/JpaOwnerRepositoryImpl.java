@@ -70,6 +70,12 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
         return (Owner) query.getSingleResult();
     }
 
+    @Override
+    public Collection<Owner> findByKey(String key) {
+        Query query = this.em.createQuery("SELECT owner FROM Owner owner WHERE owner.lastName LIKE :key OR owner.firstName LIKE :key OR owner.city LIKE :key OR owner.address LIKE :key OR owner.telephone LIKE :key");
+        query.setParameter("key", key);
+        return query.getResultList();
+    }
 
     @Override
     public void save(Owner owner) {

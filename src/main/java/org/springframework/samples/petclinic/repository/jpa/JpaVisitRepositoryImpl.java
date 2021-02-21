@@ -73,6 +73,14 @@ public class JpaVisitRepositoryImpl implements VisitRepository {
         return query.getResultList();
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Visit> findByKey(String key) {
+        Query query = this.em.createQuery("SELECT v FROM Visit v WHERE v.description LIKE :key OR v.date LIKE :key OR v.pet.id LIKE :key OR v.vet.id LIKE :key");
+        query.setParameter("key","%" + key + "%");
+        return query.getResultList();
+    }
+
 	@Override
 	public Visit findById(int id) throws DataAccessException {
 		return this.em.find(Visit.class, id);

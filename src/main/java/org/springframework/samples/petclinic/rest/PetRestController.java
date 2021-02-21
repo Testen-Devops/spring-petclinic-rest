@@ -62,6 +62,19 @@ public class PetRestController {
 		return new ResponseEntity<Pet>(pet, HttpStatus.OK);
 	}
 
+	@PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
+	@RequestMapping(value = "/search/{key}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Collection<Pet>> getPetsKey(@PathVariable("key") String key) {
+		if (key == null) {
+			key = "";
+		}
+		Collection<Pet> pets = this.clinicService.findPetByKey(key);
+		if (pets.isEmpty()) {
+			return new ResponseEntity<Collection<Pet>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Collection<Pet>>(pets, HttpStatus.OK);
+	}
+
     @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Collection<Pet>> getPets(){
