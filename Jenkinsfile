@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Build') {
             when {
-                anyOf { branch 'develop'; branch 'master' }
+                anyOf { branch 'develop'; branch 'master'; }
             }
             steps {
                 script {
@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Run API test') {
             when {
-                anyOf { branch 'develop'; branch 'master' }
+                anyOf { branch 'develop'; branch 'master';}
             }
             steps {
                 sh 'docker run --rm -d -p 9977:9966 --name rest-test-container npetersdev/spring-petclinic-rest'

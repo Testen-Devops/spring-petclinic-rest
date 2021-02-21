@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
@@ -68,6 +69,13 @@ public class JpaPetRepositoryImpl implements PetRepository {
 	@Override
 	public Collection<Pet> findAll() throws DataAccessException {
 		return this.em.createQuery("SELECT pet FROM Pet pet").getResultList();
+	}
+
+    @Override
+	public Collection<Pet> findByKey(String key) throws DataAccessException {
+		Query query = this.em.createQuery("SELECT * FROM Pet pet WHERE pet.name LIKE :key OR pet.owner.firstName LIKE :key OR pet.id LIKE :key OR pet.birthDate LIKE :key OR pet.owner.lastName LIKE :key");
+        query.setParameter("key", key);
+        return query.getResultList();
 	}
 
 	@Override
